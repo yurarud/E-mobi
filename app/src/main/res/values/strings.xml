@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">E-mobi</string>
+    <string name="action_settings">Свойства</string>
+    <string name="Clients">Клиенты</string>
+    <string name="Orders">Заказы</string>
+    <string name="Order">Новый заказ</string>
+    <string name="UploadData">Выгрузить заказы</string>
+    <string name="DownloadTovary">Полная загрузка</string>
+    <string name="DownloadKlienty">Загрузка остатков</string>
+    <string name="title_activity_clients">ClientsActivity</string>
+</resources>
