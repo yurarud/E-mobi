@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
                 /*Передаём код действия
                     1 - полная загрузка
-                    2 - загрузка цен
+                    2 - загрузка остатков
                     3 - выгрузка накладных
                 */
 
