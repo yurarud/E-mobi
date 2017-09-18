@@ -2,6 +2,7 @@ package ua.zp.yurarud.e_mobi.model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Required;
+import io.realm.RealmList;
 
 /**
  * Created by Админ on 14.08.2017.
@@ -17,6 +18,9 @@ public class Products extends RealmObject {
     private String kod_rod;
     private String vpachke;
     private int ostatok;
+
+
+    public RealmList<Ceny> Cena;
 
     public String getKod() {
         return kod;
