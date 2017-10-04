@@ -1,6 +1,7 @@
 package ua.zp.yurarud.e_mobi;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,12 @@ import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    static Handler h;
+    TextView tablo1;
+    TextView tablo2;
+    TextView tablo3;
+    TextView tablo4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton btnZakaz = (ImageButton) findViewById(R.id.orderButton);
+        btnZakaz.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ZakazActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tablo1 = (TextView) findViewById(R.id.tvTovary);
+        tablo2 = (TextView) findViewById(R.id.tvClienty);
+        tablo3 = (TextView) findViewById(R.id.tvCeny);
+        tablo4 = (TextView) findViewById(R.id.tvOstatki);
+
+        h = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                // обновляем TextView
+                switch (msg.what){
+                    case 1:
+                        tablo1.setText("Закачано товаров: " + (msg.arg1+1)+" из "+msg.arg2);
+                        break;
+                    case 2:
+                        tablo2.setText("Закачано клиентов: " + (msg.arg1+1)+" из "+msg.arg2);
+                        break;
+                    case 3:
+                        tablo3.setText("Закачано цен: " + (msg.arg1+1)+" из "+msg.arg2);
+                        break;
+                    case 4:
+                        tablo4.setText("Закачано остатков: " + (msg.arg1+1)+" из "+msg.arg2);
+                        break;
+                    case 10:
+                        switch (msg.arg1) {
+                            case 1:
+                                tablo1.setText("Запрос данных с сервера...");
+                                break;
+                            case 2:
+                                tablo2.setText("Запрос данных с сервера...");
+                                break;
+                            case 3:
+                                tablo3.setText("Запрос данных с сервера...");
+                                break;
+                            case 4:
+                                tablo4.setText("Запрос данных с сервера...");
+                                break;
+                        }
+                }
+
+
+
+
+            };
+        };
+
+
+
         ImageButton btnDownload = (ImageButton) findViewById(R.id.DownloadTovButton);
         btnDownload.setOnClickListener(new View.OnClickListener() {
 
@@ -67,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
 
     }
 

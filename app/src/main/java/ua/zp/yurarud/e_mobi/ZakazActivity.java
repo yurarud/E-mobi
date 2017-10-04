@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import io.realm.Realm;
 
@@ -16,6 +17,21 @@ import io.realm.Realm;
 public class ZakazActivity extends AppCompatActivity {
 
     private Realm mRealm;
+
+    static String kod_tov;
+    static String naim_tov;
+
+    TextView naimenov;
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        naimenov= (TextView) findViewById(R.id.tvVybKlioent);
+        if(naim_tov!=null){
+            naimenov.setText(naim_tov);
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +46,7 @@ public class ZakazActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ClientActivity.class);
+                intent.putExtra("zakaz",1);
                 startActivity(intent);
             }
         });

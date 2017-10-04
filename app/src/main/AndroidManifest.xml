@@ -24,6 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ClientActivity"></activity>
+        <activity android:name=".ZakazActivity"></activity>
+        <activity android:name=".ProductActivity"></activity>
     </application>
 
 </manifest>

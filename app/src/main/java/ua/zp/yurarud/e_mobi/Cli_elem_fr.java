@@ -35,8 +35,13 @@ public class Cli_elem_fr extends ListFragment {
 
         TextView twKod = (TextView) getActivity().findViewById(R.id.tw_kod_elem);
         String kod_tov= (String) twKod.getText();
-
-        RealmQuery<GroupProducs> gr0 = mRealm.where(GroupProducs.class).equalTo("kod", "000000742");
+        RealmQuery<GroupProducs> gr0 = mRealm.where(GroupProducs.class).equalTo("kod", kod_tov);
+        if(kod_tov==""){
+            gr0 = mRealm.where(GroupProducs.class).equalTo("level", 0);
+        }
+        else {
+             gr0 = mRealm.where(GroupProducs.class).equalTo("kod", kod_tov);
+        }
         RealmResults<GroupProducs> nab0 = gr0.findAll();
         currentProduct = new ArrayList<String>();
         for (GroupProducs gp0 : nab0) {

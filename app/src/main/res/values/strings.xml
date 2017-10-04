@@ -8,4 +8,7 @@
     <string name="DownloadTovary">Полная загрузка</string>
     <string name="DownloadKlienty">Загрузка остатков</string>
     <string name="title_activity_clients">ClientsActivity</string>
+    <string name="Client">Клиент</string>
+    <string name="TypCeny">Тип цены:</string>
+    <string name="Podbor">Подбор товаров</string>
 </resources>

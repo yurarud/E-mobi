@@ -12,6 +12,16 @@ public class Clients extends RealmObject {
     @Required
     private String kod;
 
+    private String kod_rod;
+
+    public String getKod_rod() {
+        return kod_rod;
+    }
+
+    public void setKod_rod(String kod_rod) {
+        this.kod_rod = kod_rod;
+    }
+
     @Required
     private String name;
 
