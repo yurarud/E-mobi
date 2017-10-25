@@ -18,9 +18,34 @@ public class Products extends RealmObject {
     private String kod_rod;
     private String vpachke;
     private int ostatok;
+    private double CenaGrn;
+    private double CenaNDS;
+    private double CenaFOP;
 
+    public double getCenaGrn() {
+        return CenaGrn;
+    }
 
-    public RealmList<Ceny> Cena;
+    public void setCenaGrn(double cenaGrn) {
+        CenaGrn = cenaGrn;
+    }
+
+    public double getCenaNDS() {
+        return CenaNDS;
+    }
+
+    public void setCenaNDS(double cenaNDS) {
+        CenaNDS = cenaNDS;
+    }
+
+    public double getCenaFOP() {
+        return CenaFOP;
+    }
+
+    public void setCenaFOP(double cenaFOP) {
+        CenaFOP = cenaFOP;
+    }
+
 
     public String getKod() {
         return kod;

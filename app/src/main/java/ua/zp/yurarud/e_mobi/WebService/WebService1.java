@@ -417,4 +417,78 @@ public class WebService1 {
         return "";
     }
 
+    public void setTovaryAsync(String data) throws Exception{
+        if (this.eventHandler == null)
+            throw new Exception("Async Methods Requires IWsdl2CodeEvents");
+        setTovaryAsync(data, null);
+    }
+
+    public void setTovaryAsync(final String data,final List<HeaderProperty> headers) throws Exception{
+
+        new AsyncTask<Void, Void, Boolean>(){
+            @Override
+            protected void onPreExecute() {
+                eventHandler.Wsdl2CodeStartedRequest();
+            };
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return setTovary(data, headers);
+            }
+            @Override
+            protected void onPostExecute(Boolean result)
+            {
+                eventHandler.Wsdl2CodeEndedRequest();
+                if (result != null){
+                    eventHandler.Wsdl2CodeFinished("setTovary", result);
+                }
+            }
+        }.execute();
+    }
+
+    public boolean setTovary(String data){
+        return setTovary(data, null);
+    }
+
+    public boolean setTovary(String data,List<HeaderProperty> headers){
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        soapEnvelope.implicitTypes = true;
+        soapEnvelope.dotNet = true;
+        SoapObject soapReq = new SoapObject("http://192.168.1.140/WebService1","setTovary");
+        soapReq.addProperty("Data",data);
+        soapEnvelope.setOutputSoapObject(soapReq);
+        HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
+        try{
+            if (headers!=null){
+                httpTransport.call("http://192.168.1.140/WebService1/setTovary", soapEnvelope,headers);
+            }else{
+                httpTransport.call("http://192.168.1.140/WebService1/setTovary", soapEnvelope);
+            }
+            Object retObj = soapEnvelope.bodyIn;
+            if (retObj instanceof SoapFault){
+                SoapFault fault = (SoapFault)retObj;
+                Exception ex = new Exception(fault.faultstring);
+                if (eventHandler != null)
+                    eventHandler.Wsdl2CodeFinishedWithException(ex);
+            }else{
+                SoapObject result=(SoapObject)retObj;
+                if (result.getPropertyCount() > 0){
+                    Object obj = result.getProperty(0);
+                    if (obj != null && obj.getClass().equals(SoapPrimitive.class)){
+                        SoapPrimitive j =(SoapPrimitive) obj;
+                        boolean resultVariable = Boolean.parseBoolean(j.toString());
+                        return resultVariable;
+                    }else if (obj!= null && obj instanceof Boolean){
+                        boolean resultVariable = (Boolean) obj;
+                        return resultVariable;
+                    }
+                }
+            }
+        }catch (Exception e) {
+            if (eventHandler != null)
+                eventHandler.Wsdl2CodeFinishedWithException(e);
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

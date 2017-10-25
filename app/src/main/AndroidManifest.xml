@@ -26,6 +26,9 @@
         <activity android:name=".ClientActivity"></activity>
         <activity android:name=".ZakazActivity"></activity>
         <activity android:name=".ProductActivity"></activity>
+        <activity android:name=".KolvoActivity"></activity>
+        <activity android:name=".PrefActivity"></activity>
+        <activity android:name=".ZakazSpisokActivity"></activity>
     </application>
 
 </manifest>

@@ -13,11 +13,13 @@ import org.json.JSONObject;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import ua.zp.yurarud.e_mobi.model.Ceny;
+
 import ua.zp.yurarud.e_mobi.model.Clients;
 import ua.zp.yurarud.e_mobi.model.GroupClients;
 import ua.zp.yurarud.e_mobi.model.GroupProducs;
 import ua.zp.yurarud.e_mobi.model.Products;
+import ua.zp.yurarud.e_mobi.model.Zakaz;
+import ua.zp.yurarud.e_mobi.model.ZakazTable;
 
 /**
  * Created by Админ on 14.08.2017.
@@ -66,12 +68,25 @@ public class ParserJson {
 
         Realm mRealm = Realm.getDefaultInstance();
         //Очищаем таблицы БД
+        GroupProducs gp;
+        Products pr;
+
+
+        //Очищаем таблицы БД
         mRealm.beginTransaction();
-        GroupProducs gp = mRealm.createObject(GroupProducs.class);
-        gp.deleteFromRealm();
-        Products pr=mRealm.createObject(Products.class);
-        pr.deleteFromRealm();
+        RealmQuery<Products> cr0 = mRealm.where(Products.class);
+        RealmResults<Products> cr1 = cr0.findAll();
+        for(Products cli:cr1){
+            cli.deleteFromRealm();
+        }
+        RealmQuery<GroupProducs> gr0 = mRealm.where(GroupProducs.class);
+        RealmResults<GroupProducs> gr1 = gr0.findAll();
+        for(GroupProducs gk: gr1){
+            gk.deleteFromRealm();
+        }
         mRealm.commitTransaction();
+
+
         try {
             JSONObject dataJsonObj = null;
             dataJsonObj = new JSONObject(strJson);
@@ -288,14 +303,14 @@ public class ParserJson {
                 String cena = tovar.getString("cena");
                 if (pr_rod != null)
                 {
-                    Ceny cen=mRealm.createObject(Ceny.class);
+
                     Double cen_grn=Double.valueOf(cena);
-                    cen.setCenaGrn(cen_grn);
+                    pr_rod.setCenaGrn(cen_grn);
                     Double cen_nds=Math.round((cen_grn+cen_grn*0.06d)*100d)/100d;
-                    cen.setCenaNDS(cen_nds);
+                    pr_rod.setCenaNDS(cen_nds);
                     Double cen_fop=Math.round((cen_grn+cen_grn*0.01d)*100d)/100d;
-                    cen.setCenaFOP(cen_fop);
-                    pr_rod.Cena.add(cen);
+                    pr_rod.setCenaFOP(cen_fop);
+
                 }
 
 
@@ -368,6 +383,49 @@ public class ParserJson {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    protected String parsZakaz(int nomer, View view, String tp){
+        JSONObject dokum= new JSONObject();
+        JSONObject stroka= new JSONObject();
+        JSONArray products = new JSONArray();
+
+        Realm mRealm = Realm.getDefaultInstance();
+
+        String json="";
+
+        RealmQuery<Zakaz> zak0 = mRealm.where(Zakaz.class).equalTo("nomer", nomer);
+        Zakaz zak = zak0.findFirst();
+        try {
+            dokum.put("idUzla",tp);
+            dokum.put("nomer",tp+" "+nomer);
+            dokum.put("komment",zak.getKomment());
+            dokum.put("klient",zak.getKlient().getKod());
+            dokum.put("tipCeny",zak.getTipCeny());
+            RealmResults<ZakazTable> zt=zak.producty.where().findAll();
+            if(zt.size()>0){
+                int ind=0;
+                for(ZakazTable zt1:zt){
+                    stroka.put("tovar",zt1.getTovar().getKod());
+                    stroka.put("ostatok",zt1.getOstatok());
+                    stroka.put("cena",zt1.getCena());
+                    products.put(ind,stroka);
+                    stroka=null;
+                    stroka=new JSONObject();
+                    ind++;
+                }
+              }
+            dokum.put("PRODUCT",products);
+            json=dokum.toString();
+            Snackbar.make(view, "Выгрузка заказа завершена!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+        return json;
     }
 
 }

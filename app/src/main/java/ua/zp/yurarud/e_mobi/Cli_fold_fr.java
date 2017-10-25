@@ -1,7 +1,6 @@
 package ua.zp.yurarud.e_mobi;
 
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import ua.zp.yurarud.e_mobi.model.Clients;
 import ua.zp.yurarud.e_mobi.model.GroupClients;
-import ua.zp.yurarud.e_mobi.model.Products;
 
 /**
  * Created by Админ on 28.08.2017.
@@ -182,8 +180,8 @@ public class Cli_fold_fr extends ListFragment {
         }
         else{
             if(ClientActivity.vozvrat==1){
-                ZakazActivity.kod_tov=kod_tov;
-                ZakazActivity.naim_tov=naim_tov;
+                ZakazActivity.kod_kli=kod_tov;
+                ZakazActivity.naim_kli =naim_tov;
                 getActivity().finish();
             }
         }

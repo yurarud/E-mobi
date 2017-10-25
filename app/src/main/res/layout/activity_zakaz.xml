@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,7 +26,7 @@
         <ImageButton
             android:id="@+id/btnVybKlioent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:srcCompat="@android:drawable/arrow_down_float" />
     </LinearLayout>
 
@@ -40,9 +41,11 @@
             android:layout_height="match_parent"
             android:text="@string/TypCeny" />
 
-        <ExpandableListView
+        <Spinner
+            android:id="@+id/spTypCeny"
             android:layout_width="match_parent"
-            android:layout_height="36dp" />
+            android:layout_height="wrap_content">
+        </Spinner>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,11 +67,96 @@
             android:text="@string/Podbor" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/textView13"
             android:layout_width="wrap_content"
-            android:layout_height="33dp"
-            android:layout_weight="1.00" />
+            android:layout_height="32dp"
+            android:layout_weight="0.11" />
 
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="171dp"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:text="@string/Nompp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.30"
+                android:text="@string/NaimNom" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.80"
+                android:text="@string/CenaNom" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.80"
+                android:text="@string/KolVoNom" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.80"
+                android:text="@string/SummaNom" />
+        </TableRow>
+
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fragment_containerSpisok"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvVybKlioent1"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_weight="6" />
+
+        <Button
+            android:id="@+id/btn_otpravit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Otpravit" />
     </LinearLayout>
 
 

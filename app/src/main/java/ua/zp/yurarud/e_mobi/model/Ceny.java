@@ -1,6 +1,7 @@
 package ua.zp.yurarud.e_mobi.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Админ on 18.09.2017.
@@ -8,34 +9,24 @@ import io.realm.RealmObject;
 
 public class Ceny extends RealmObject {
 
-    private double CenaGrn;
-    private double CenaNDS;
+    private int lastNomer;
 
-    public double getCenaGrn() {
-        return CenaGrn;
+
+    private int id;
+
+    public int getLastNomer() {
+        return lastNomer;
     }
 
-    public void setCenaGrn(double cenaGrn) {
-        CenaGrn = cenaGrn;
+    public void setLastNomer(int lastNomer) {
+        this.lastNomer = lastNomer;
     }
 
-    public double getCenaNDS() {
-        return CenaNDS;
+    public int getId() {
+        return id;
     }
 
-    public void setCenaNDS(double cenaNDS) {
-        CenaNDS = cenaNDS;
+    public void setId(int id) {
+        this.id = id;
     }
-
-    public double getCenaFOP() {
-        return CenaFOP;
-    }
-
-    public void setCenaFOP(double cenaFOP) {
-        CenaFOP = cenaFOP;
-    }
-
-    private double CenaFOP;
-
-
 }

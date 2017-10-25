@@ -1,6 +1,7 @@
 package ua.zp.yurarud.e_mobi;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -20,8 +21,11 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import ua.zp.yurarud.e_mobi.model.Clients;
 import ua.zp.yurarud.e_mobi.model.GroupProducs;
 import ua.zp.yurarud.e_mobi.model.Products;
+import ua.zp.yurarud.e_mobi.model.Zakaz;
+import ua.zp.yurarud.e_mobi.model.ZakazTable;
 
 /**
  * Created by Админ on 28.08.2017.
@@ -32,6 +36,8 @@ public class Pro_fold_fr extends ListFragment {
     private Realm mRealm;
     List<String> cli_Folders;
     List<String> kod_Cli_Folders;
+    List<Products> productes;
+    int tekposition;
     static String KOD_TOV="";
     static int Folder=0;
     static Map<String,String[]> Uroven = new HashMap<String,String[]>();
@@ -86,10 +92,12 @@ public class Pro_fold_fr extends ListFragment {
                 else{
                     if(gp0.producty.size()>0){
                         Folder=1;
+                        productes = new ArrayList<Products>();
                         RealmResults<Products> podgruppa = gp0.producty.where().findAll();
                         for (Products gp1 : podgruppa) {
                             cli_Folders.add(gp1.getName());
                             kod_Cli_Folders.add(gp1.getKod());
+                            productes.add(gp1);
                         }
                     }
                 }
@@ -97,10 +105,17 @@ public class Pro_fold_fr extends ListFragment {
 
         }
 
-
+        if(Folder==0) {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1, cli_Folders);
             setListAdapter(adapter);
+        }
+        else
+        {
+            ProductAdapter<Products> b1 = new ProductAdapter<Products>(getActivity(), R.layout.item_clients, productes,ZakazActivity.tipCeny);
+            setListAdapter(b1);
+        }
+
 
 
         ImageButton btnBack = (ImageButton) getActivity().findViewById(R.id.btnBack);
@@ -165,6 +180,70 @@ public class Pro_fold_fr extends ListFragment {
             //transaction.addToBackStack(kod_tov);
             transaction.commit();
         }
+        else {
+            if(ProductActivity.vozvrat==1){
+                Intent intent;
+                intent = new Intent(getActivity().getApplicationContext(), KolvoActivity.class);
+                startActivityForResult(intent,1);
+                tekposition=position;
+
+            }
+        }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int kolvo=data.getIntExtra("kolvo",0);
+        int nom_zakaza=ZakazActivity.nomer;
+        boolean otpravlen = ZakazActivity.otpravlen;
+        if(nom_zakaza==-1 || !otpravlen){
+            if(! mRealm.isInTransaction()){
+            mRealm.beginTransaction();}
+            RealmQuery<Zakaz> zak0=mRealm.where(Zakaz.class).equalTo("nomer", nom_zakaza);
+            Zakaz zak=zak0.findFirst();
+            Products pr=productes.get(tekposition);
+            if(zak!=null){
+                ZakazTable zt = null;
+                if(zak.producty.size()>0){
+                    RealmResults<ZakazTable> zp = zak.producty.where().findAll();
+                    for(ZakazTable zt1:zp){
+                        if(zt1.getTovar().equals(pr)){
+                            zt=zt1;
+                            break;
+                        }
+                    }
+                }
+                if(zt==null){
+                    zt=mRealm.createObject(ZakazTable.class);
+
+                }
+
+                zt.setTovar(pr);
+                zt.setTovar_name(pr.getName());
+
+
+
+                zt.setOstatok(kolvo);
+                switch (ZakazActivity.tipCeny){
+                    case 1: {
+                        zt.setCena(pr.getCenaGrn());
+                        break;
+                    }
+                    case 2: {
+                        zt.setCena(pr.getCenaNDS());
+                        break;
+                    }
+                    case 3: {
+                        zt.setCena(pr.getCenaFOP());
+                        break;
+                    }
+                }
+                zak.producty.add(zt);
+            }
+            mRealm.commitTransaction();
+        }
+        //getActivity().finish();
+    }
 }
