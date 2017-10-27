@@ -76,6 +76,13 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
             s4= srv1.getOstatki(tp);
             p1.parsOstatki(s4,view);
         }
+        if(act==2){
+            msg = MainActivity.h.obtainMessage(10, 4,0);
+            MainActivity.h.sendMessage(msg);
+            s4= srv1.getOstatki(tp);
+            ParserJson p1= new ParserJson();
+            p1.parsOstatki(s4,view);
+        }
         if(act==4){
             ParserJson p1= new ParserJson();
             String json=p1.parsZakaz(ZakazActivity.nomer,view,tp);

@@ -1,5 +1,6 @@
 package ua.zp.yurarud.e_mobi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -39,7 +40,8 @@ public class Spisok_list extends ListFragment implements AdapterView.OnItemClick
     List<ZakazTable> ZTable;
     ZakazAdapter<ZakazTable> b1;
     Zakaz zak;
-    private int chUdal=0;
+    int tekposition;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -73,6 +75,11 @@ public class Spisok_list extends ListFragment implements AdapterView.OnItemClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        Intent intent;
+        intent = new Intent(getActivity().getApplicationContext(), KolvoActivity.class);
+        startActivityForResult(intent,1);
+        tekposition=position;
+
     }
 
     @Override
@@ -85,7 +92,7 @@ public class Spisok_list extends ListFragment implements AdapterView.OnItemClick
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        if(chUdal==0){
+
             if (!mRealm.isInTransaction()) {
                 mRealm.beginTransaction();
             }
@@ -93,11 +100,30 @@ public class Spisok_list extends ListFragment implements AdapterView.OnItemClick
             ZTable.get(acmi.position).deleteFromRealm();
             mRealm.commitTransaction();
             ZTable.remove(acmi.position);
-            b1.notifyDataSetChanged();
-            chUdal=1;
-    }
-        return super.onContextItemSelected(item);
-        //return false;
+            //b1.notifyDataSetChanged();
 
+
+        //return super.onContextItemSelected(item);
+        return true;
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int kolvo = data.getIntExtra("kolvo", 0);
+        int nom_zakaza = ZakazActivity.nomer;
+        boolean otpravlen = ZakazActivity.otpravlen;
+        if(!otpravlen){
+            RealmQuery<Zakaz> zak0=mRealm.where(Zakaz.class).equalTo("nomer", nom_zakaza);
+            Zakaz zak=zak0.findFirst();
+            if(! mRealm.isInTransaction()){
+                mRealm.beginTransaction();}
+            ZakazTable zt= zak.producty.get(tekposition);
+            zt.setOstatok(kolvo);
+            mRealm.commitTransaction();
+            b1.notifyDataSetChanged();
+        }
     }
 }

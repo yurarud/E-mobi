@@ -143,10 +143,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton btnOstatki = (ImageButton) findViewById(R.id.DoownloadKontrButton);
+        btnOstatki.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
 
 
+                SOAP_Go sg =new SOAP_Go(2,view);
+                sg.start();
 
-
+            }
+        });
     }
 
     @Override

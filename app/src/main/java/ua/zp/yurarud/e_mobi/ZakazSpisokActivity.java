@@ -26,6 +26,7 @@ public class ZakazSpisokActivity extends FragmentActivity {
 
     static int nomer;
     static boolean otpravlen;
+    static int chUdal=0;
 
 
     @Override
