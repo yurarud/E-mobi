@@ -45,9 +45,10 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
     public void callWebService(){
 
         WebService1 srv1 = new WebService1();
-        srv1.setUrl("http://192.168.1.140/UTP/ws/WebService1/WebService1SoapBinding/");
-        //srv1.setUrl("http://91.237.7.170:81/UTP/ws/WebService1/WebService1SoapBinding/");
-        srv1.setTimeOut(800);
+        //srv1.setUrl("http://192.168.1.140/UTP/ws/WebService1/WebService1SoapBinding/");
+        srv1.setUrl("http://91.237.7.170/UTP/ws/WebService1/WebService1SoapBinding/");
+        //srv1.setUrl("http://192.168.1.101/UTP/ws/WebService1/WebService1SoapBinding/");
+        srv1.setTimeOut(1500);
         sp = PreferenceManager.getDefaultSharedPreferences(view.getContext());
         String tp=sp.getString("tp", "");
         String s1="",s2="",s3="",s4="";

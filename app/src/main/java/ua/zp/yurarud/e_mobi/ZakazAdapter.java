@@ -60,7 +60,7 @@ public class ZakazAdapter<T> extends ArrayAdapter<T> {
         double summa=0.0;
         int nom=position+1;
 
-        cena=p.getCena();
+        cena=Math.round(p.getCena()*100.0)/100.0;
         kolvo=p.getOstatok();
         summa=cena*kolvo;
         summa=Math.round(summa*100.0)/100.0;

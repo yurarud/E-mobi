@@ -19,9 +19,9 @@ import org.ksoap2.serialization.MarshalFloat;
 
 public class WebService1 {
 
-    public String NAMESPACE ="http://192.168.1.140/WebService1";
+    public String NAMESPACE ="http://localhost/WebService1";
     public String url="";
-    public int timeOut = 180;
+    public int timeOut = 1500;
     public IWsdl2CodeEvents eventHandler;
     public SoapProtocolVersion soapVersion;
 
@@ -84,14 +84,14 @@ public class WebService1 {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://192.168.1.140/WebService1","getString");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getString");
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://192.168.1.140/WebService1/getString", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/getString", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://192.168.1.140/WebService1/getString", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/getString", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){
@@ -157,15 +157,15 @@ public class WebService1 {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://192.168.1.140/WebService1","getOstatki");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getOstatki");
         soapReq.addProperty("idUzla",idUzla);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://192.168.1.140/WebService1/getOstatki", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/getOstatki", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://192.168.1.140/WebService1/getOstatki", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/getOstatki", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){
@@ -231,15 +231,15 @@ public class WebService1 {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://192.168.1.140/WebService1","getTovary");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getTovary");
         soapReq.addProperty("idUzla",idUzla);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://192.168.1.140/WebService1/getTovary", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/getTovary", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://192.168.1.140/WebService1/getTovary", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/getTovary", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){
@@ -305,15 +305,15 @@ public class WebService1 {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://192.168.1.140/WebService1","getClienty");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getClienty");
         soapReq.addProperty("idUzla",idUzla);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://192.168.1.140/WebService1/getClienty", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/getClienty", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://192.168.1.140/WebService1/getClienty", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/getClienty", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){
@@ -379,15 +379,15 @@ public class WebService1 {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://192.168.1.140/WebService1","getCeny");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getCeny");
         soapReq.addProperty("idUzla",idUzla);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://192.168.1.140/WebService1/getCeny", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/getCeny", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://192.168.1.140/WebService1/getCeny", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/getCeny", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){
@@ -453,15 +453,15 @@ public class WebService1 {
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://192.168.1.140/WebService1","setTovary");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","setTovary");
         soapReq.addProperty("Data",data);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://192.168.1.140/WebService1/setTovary", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/setTovary", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://192.168.1.140/WebService1/setTovary", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/setTovary", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){

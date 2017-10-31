@@ -69,7 +69,9 @@ public class ZakazSpisokActivity extends FragmentActivity {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            mRealm.beginTransaction();
+                            if (!mRealm.isInTransaction()) {
+                                mRealm.beginTransaction();
+                            }
                             zt1.setOtpravlen(otpravlen);
                             zt1.setBox(false);
                             mRealm.commitTransaction();

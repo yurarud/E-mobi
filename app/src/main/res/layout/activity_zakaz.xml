@@ -5,6 +5,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_zakaz_shapka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +40,7 @@
             android:id="@+id/btnVybKlioent"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            app:srcCompat="@drawable/up" />
     </LinearLayout>
 
     <LinearLayout
@@ -80,6 +93,26 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/komment" />
+
+        <EditText
+            android:id="@+id/ed_komm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="30" />
+    </LinearLayout>
+
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -100,28 +133,28 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.30"
+                android:layout_weight="4.30"
                 android:text="@string/NaimNom" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.80"
+                android:layout_weight="0.50"
                 android:text="@string/CenaNom" />
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.80"
+                android:layout_weight="0.50"
                 android:text="@string/KolVoNom" />
 
             <TextView
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.80"
+                android:layout_weight="0.50"
                 android:text="@string/SummaNom" />
         </TableRow>
 

@@ -75,17 +75,14 @@ public class ParserJson {
         //Очищаем таблицы БД
         mRealm.beginTransaction();
         RealmQuery<Products> cr0 = mRealm.where(Products.class);
-        RealmResults<Products> cr1 = cr0.findAll();
-        for(Products cli:cr1){
-            cli.deleteFromRealm();
-        }
+        cr0.findAll().deleteAllFromRealm();
         RealmQuery<GroupProducs> gr0 = mRealm.where(GroupProducs.class);
-        RealmResults<GroupProducs> gr1 = gr0.findAll();
-        for(GroupProducs gk: gr1){
-            gk.deleteFromRealm();
-        }
+        gr0.findAll().deleteAllFromRealm();
+        RealmQuery<ZakazTable> zt0 = mRealm.where(ZakazTable.class);
+        zt0.findAll().deleteAllFromRealm();
+        RealmQuery<Zakaz> z0 = mRealm.where(Zakaz.class);
+        z0.findAll().deleteAllFromRealm();
         mRealm.commitTransaction();
-
 
         try {
             JSONObject dataJsonObj = null;
@@ -182,6 +179,12 @@ public class ParserJson {
         //Очищаем таблицы БД
         mRealm.beginTransaction();
         RealmQuery<Clients> cr0 = mRealm.where(Clients.class);
+        cr0.findAll().deleteAllFromRealm();
+        RealmQuery<GroupClients> gr0 = mRealm.where(GroupClients.class);
+        gr0.findAll().deleteAllFromRealm();
+        RealmResults<Clients> cr1;
+        RealmResults<GroupClients> gr1;
+        /*RealmQuery<Clients> cr0 = mRealm.where(Clients.class);
         RealmResults<Clients> cr1 = cr0.findAll();
         for(Clients cli:cr1){
             cli.deleteFromRealm();
@@ -190,7 +193,7 @@ public class ParserJson {
         RealmResults<GroupClients> gr1 = gr0.findAll();
         for(GroupClients gk: gr1){
             gk.deleteFromRealm();
-        }
+        }*/
         mRealm.commitTransaction();
 
 

@@ -123,7 +123,9 @@ public class Spisok_list extends ListFragment implements AdapterView.OnItemClick
             ZakazTable zt= zak.producty.get(tekposition);
             zt.setOstatok(kolvo);
             mRealm.commitTransaction();
-            b1.notifyDataSetChanged();
+            //b1.notifyDataSetChanged();
+            //Intent intent = new Intent();
+            //intent.putExtra("obnovit",1);
         }
     }
 }

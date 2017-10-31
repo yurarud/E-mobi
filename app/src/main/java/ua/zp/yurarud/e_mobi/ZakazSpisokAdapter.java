@@ -60,7 +60,11 @@ public class ZakazSpisokAdapter<T> extends ArrayAdapter<T> {
             view = convertView;
         }
 
+        if (!mRealm.isInTransaction()) {
+            mRealm.beginTransaction();
+        }
 
+        mRealm.commitTransaction();
         Zakaz p = getProduct(position);
         String nom="Заказ № "+String.valueOf(p.getNomer());
 
@@ -77,6 +81,7 @@ public class ZakazSpisokAdapter<T> extends ArrayAdapter<T> {
         cbBuy.setOnCheckedChangeListener(myCheckChangeList);
         cbBuy.setTag(position);
         cbBuy.setChecked(p.isBox());
+
 
 
         return view;
