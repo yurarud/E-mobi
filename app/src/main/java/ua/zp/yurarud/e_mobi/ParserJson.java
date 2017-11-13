@@ -60,12 +60,7 @@ public class ParserJson {
             e.printStackTrace();
         }
     }
-
-    protected void parsTovary(String strJson, View view)  {
-        //StringBuilder sb1=new StringBuilder();
-
-
-
+    protected  void clearTovary(){
         Realm mRealm = Realm.getDefaultInstance();
         //Очищаем таблицы БД
         GroupProducs gp;
@@ -83,6 +78,16 @@ public class ParserJson {
         RealmQuery<Zakaz> z0 = mRealm.where(Zakaz.class);
         z0.findAll().deleteAllFromRealm();
         mRealm.commitTransaction();
+    }
+
+    protected void parsTovary(String strJson, View view,int smesh, String kon)  {
+        //StringBuilder sb1=new StringBuilder();
+
+        Realm mRealm = Realm.getDefaultInstance();
+
+        GroupProducs gp;
+        Products pr;
+        int okon=Integer.parseInt(kon);
 
         try {
             JSONObject dataJsonObj = null;
@@ -91,7 +96,7 @@ public class ParserJson {
             int j=0;
             for(int i=0;i<tovary.length();i++)
             {
-                msg = MainActivity.h.obtainMessage(1, i, tovary.length());
+                msg = MainActivity.h.obtainMessage(1, i+smesh, okon);
                 MainActivity.h.sendMessage(msg);
 
                 mRealm.beginTransaction();
@@ -105,29 +110,16 @@ public class ParserJson {
                 {
                     gp = mRealm.createObject(GroupProducs.class);
                     String kod_rod = tovar.getString("kod_rod").trim();
+                    gp.setKod_rod(kod_rod);
+                    String kod = tovar.getString("kod");
+                    gp.setKod(kod);
+                    String name = tovar.getString("name");
+                    gp.setName(name);
+                    int level = tovar.getInt("level");
+                    gp.setLevel(level);
 
-                    GroupProducs gr_rod = mRealm.where(GroupProducs.class).equalTo("kod", kod_rod).findFirst();
-                        if (gr_rod != null) {
-                            String kod = tovar.getString("kod");
-                            gp.setKod(kod);
-                            String name = tovar.getString("name");
-                            gp.setName(name);
-                            int level = tovar.getInt("level");
-                            gp.setLevel(level);
-                            gp.setKod_rod(kod_rod);
-                            gr_rod.groupProducy.add(gp);
-                        }
 
-                        else
-                        {
-                            String kod = tovar.getString("kod");
-                            gp.setKod(kod);
-                            String name = tovar.getString("name");
-                            gp.setName(name);
-                            int level = tovar.getInt("level");
-                            gp.setLevel(level);
 
-                        }
                 }
                 else
                 {
@@ -141,12 +133,6 @@ public class ParserJson {
                     String vpachke = tovar.getString("vpachke");
                     pr.setVpachke(vpachke);
 
-                    GroupProducs gr_rod = mRealm.where(GroupProducs.class).equalTo("kod", kod_rod).findFirst();
-                    if (gr_rod != null)
-                    {
-                        gr_rod.producty.add(pr);
-                    }
-
                 }
 
 
@@ -155,25 +141,47 @@ public class ParserJson {
 
         mRealm.close();
 
-            Snackbar.make(view, "Загрузка товаров завершена!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            /*Snackbar.make(view, "Загрузка товаров завершена!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();*/
 
-
-          //  MainActivity.tablo.setText("Загрузка товаров завершена!");
-
-/*          Main
-            TextView tvInfo = (TextView) view.findViewById(R.id.textView);
-            tvInfo.setText("Загрузка товаров завершена!");
-*/
-
-            //tv1=sb1.toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    protected void parsClienty(String strJson, View view)  {
-        StringBuilder sb1=new StringBuilder();
+    protected void  sortTovary(){
+        Realm mRealm = Realm.getDefaultInstance();
+        RealmQuery<Products> cr0;
+        RealmResults<Products> cr1;
+        RealmQuery<GroupProducs> gr0;
+        RealmResults<GroupProducs> gr1;
+
+        mRealm.beginTransaction();
+        cr0 = mRealm.where(Products.class);
+        cr1 = cr0.findAll();
+        for(Products cli:cr1){
+            GroupProducs gr_rod = mRealm.where(GroupProducs.class).equalTo("kod", cli.getKod_rod()).findFirst();
+            if(gr_rod!=null) {
+                gr_rod.producty.add(cli);
+            }
+        }
+        gr0 = mRealm.where(GroupProducs.class);
+        gr1 = gr0.findAll();
+        for(GroupProducs gk: gr1){
+            if(gk.getKod_rod()!=null) {
+                GroupProducs gr_rod = mRealm.where(GroupProducs.class).equalTo("kod", gk.getKod_rod()).findFirst();
+                if (gr_rod != null) {
+                    gr_rod.groupProducy.add(gk);
+                }
+            }
+        }
+        mRealm.commitTransaction();
+
+        /*Snackbar.make(view, "Загрузка товаров завершена!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();*/
+    }
+
+    protected void clearClienty(){
 
         Realm mRealm = Realm.getDefaultInstance();
         //Очищаем таблицы БД
@@ -184,19 +192,24 @@ public class ParserJson {
         gr0.findAll().deleteAllFromRealm();
         RealmResults<Clients> cr1;
         RealmResults<GroupClients> gr1;
-        /*RealmQuery<Clients> cr0 = mRealm.where(Clients.class);
-        RealmResults<Clients> cr1 = cr0.findAll();
-        for(Clients cli:cr1){
-            cli.deleteFromRealm();
-        }
-        RealmQuery<GroupClients> gr0 = mRealm.where(GroupClients.class);
-        RealmResults<GroupClients> gr1 = gr0.findAll();
-        for(GroupClients gk: gr1){
-            gk.deleteFromRealm();
-        }*/
+
         mRealm.commitTransaction();
 
+    }
 
+    protected void parsClienty(String strJson, View view, int smesh, String kon)  {
+        StringBuilder sb1=new StringBuilder();
+
+        Realm mRealm = Realm.getDefaultInstance();
+        //Очищаем таблицы БД
+
+        RealmQuery<Clients> cr0 = mRealm.where(Clients.class);
+
+        RealmQuery<GroupClients> gr0 = mRealm.where(GroupClients.class);
+
+        RealmResults<Clients> cr1;
+        RealmResults<GroupClients> gr1;
+        int okon=Integer.parseInt(kon);
 
         gr0 = mRealm.where(GroupClients.class);
         RealmResults<GroupClients> lev0 = gr0.findAll();
@@ -209,7 +222,7 @@ public class ParserJson {
             int j=0;
             for(int i=0;i<tovary.length();i++)
             {
-                msg = MainActivity.h.obtainMessage(2, i, tovary.length());
+                msg = MainActivity.h.obtainMessage(2, i+smesh, okon);
                 MainActivity.h.sendMessage(msg);
 
                 mRealm.beginTransaction();
@@ -252,34 +265,49 @@ public class ParserJson {
                 mRealm.commitTransaction();
             }
 
-            mRealm.beginTransaction();
-            cr0 = mRealm.where(Clients.class);
-            cr1 = cr0.findAll();
-            for(Clients cli:cr1){
-                GroupClients gr_rod = mRealm.where(GroupClients.class).equalTo("kod", cli.getKod_rod()).findFirst();
-                if(gr_rod!=null) {
-                    gr_rod.clienty.add(cli);
-                }
-            }
-            gr0 = mRealm.where(GroupClients.class);
-            gr1 = gr0.findAll();
-            for(GroupClients gk: gr1){
-                GroupClients gr_rod = mRealm.where(GroupClients.class).equalTo("kod", gk.getKod_rod()).findFirst();
-                if(gr_rod!=null) {
-                    gr_rod.groupProducy.add(gk);
-                }
-            }
-            mRealm.commitTransaction();
 
-
-            mRealm.close();
-
-            Snackbar.make(view, "Загрузка клиентов завершена!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
             //tv1=sb1.toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    protected  void sortClienty(View view){
+
+        Realm mRealm = Realm.getDefaultInstance();
+
+        RealmQuery<Clients> cr0 = mRealm.where(Clients.class);
+
+        RealmQuery<GroupClients> gr0 = mRealm.where(GroupClients.class);
+
+        RealmResults<Clients> cr1;
+        RealmResults<GroupClients> gr1;
+
+        mRealm.beginTransaction();
+        cr0 = mRealm.where(Clients.class);
+        cr1 = cr0.findAll();
+        for(Clients cli:cr1){
+            GroupClients gr_rod = mRealm.where(GroupClients.class).equalTo("kod", cli.getKod_rod()).findFirst();
+            if(gr_rod!=null) {
+                gr_rod.clienty.add(cli);
+            }
+        }
+        gr0 = mRealm.where(GroupClients.class);
+        gr1 = gr0.findAll();
+        for(GroupClients gk: gr1){
+            GroupClients gr_rod = mRealm.where(GroupClients.class).equalTo("kod", gk.getKod_rod()).findFirst();
+            if(gr_rod!=null) {
+                gr_rod.groupProducy.add(gk);
+            }
+        }
+        mRealm.commitTransaction();
+
+
+        mRealm.close();
+
+        Snackbar.make(view, "Загрузка клиентов завершена!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
     }
 
     protected void parsCeny(String strJson, View view)  {
@@ -348,29 +376,27 @@ public class ParserJson {
             dataJsonObj = new JSONObject(strJson);
             JSONArray tovary = dataJsonObj.getJSONArray("PRODUCT");
             int j=0;
+            mRealm.beginTransaction();
             for(int i=0;i<tovary.length();i++)
             {
 
                 msg = MainActivity.h.obtainMessage(4, i, tovary.length());
                 MainActivity.h.sendMessage(msg);
 
-                mRealm.beginTransaction();
-
                 JSONObject tovar=tovary.getJSONObject(i);
                 String kod = tovar.getString("kod");
-                Products pr_rod=mRealm.where(Products.class).equalTo("kod", kod).findFirst();
-                int ostatok = Integer.valueOf(tovar.getString("ostatok"));
+                if(kod!=null) {
+                    Products pr_rod = mRealm.where(Products.class).equalTo("kod", kod).findFirst();
+                    double os = Double.parseDouble(tovar.getString("ostatok"));
+                    int ostatok = (int) os;
 
-                if (pr_rod != null)
-                {
-                    pr_rod.setOstatok(ostatok);
+                    if (pr_rod != null) {
+                        pr_rod.setOstatok(ostatok);
+                    }
                 }
 
-
-
-
-                mRealm.commitTransaction();
             }
+            mRealm.commitTransaction();
 
             mRealm.close();
 

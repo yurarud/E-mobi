@@ -135,9 +135,10 @@ public class ZakazActivity extends FragmentActivity {
             shapka.setText("Заказ № "+String.valueOf(nomer));
             komm.setText(zak.getKomment());
 
-
-            Spinner spinner = (Spinner) findViewById(R.id.spTypCeny);
-            spinner.setSelection(tipCeny);
+            if(nomer != -1) {
+                Spinner spinner = (Spinner) findViewById(R.id.spTypCeny);
+                spinner.setSelection(zak.getTipCeny()-1);
+            }
 
 
             Spisok_list fragment1 = new Spisok_list();
@@ -155,12 +156,10 @@ public class ZakazActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         mRealm = Realm.getDefaultInstance();
-
-
         Intent intent = getIntent();
         vozvrat = intent.getIntExtra("zakaz",0);
 
-        if(vozvrat==0) {
+        if(vozvrat==0 && savedInstanceState == null) {
             nomer = -1;
             naim_kli = null;
             kod_kli = null;
@@ -204,7 +203,7 @@ public class ZakazActivity extends FragmentActivity {
         shapka = (TextView) findViewById(R.id.tv_zakaz_shapka);
         shapka.setText("Заказ № "+String.valueOf(nomer));
 
-        ImageButton btnClients = (ImageButton) findViewById(R.id.btnVybKlioent);
+        Button btnClients = (Button) findViewById(R.id.btnVybKlioent);
         btnClients.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -214,7 +213,6 @@ public class ZakazActivity extends FragmentActivity {
                 startActivity(intent);
             }
         });
-
 
 
         Button btnProdicts = (Button) findViewById(R.id.btnPodbor);

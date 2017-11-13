@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import io.realm.Realm;
 import ua.zp.yurarud.e_mobi.WebService.IWsdl2CodeEvents;
 import ua.zp.yurarud.e_mobi.WebService.WebService1;
@@ -46,26 +48,79 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
 
         WebService1 srv1 = new WebService1();
         //srv1.setUrl("http://192.168.1.140/UTP/ws/WebService1/WebService1SoapBinding/");
-        srv1.setUrl("http://91.237.7.170/UTP/ws/WebService1/WebService1SoapBinding/");
-        //srv1.setUrl("http://192.168.1.101/UTP/ws/WebService1/WebService1SoapBinding/");
+        //srv1.setUrl("http://91.237.7.170/UTP/ws/WebService1/WebService1SoapBinding/");
+        srv1.setUrl("http://192.168.1.101/UTP/ws/WebService1/WebService1SoapBinding/");
         srv1.setTimeOut(1500);
         sp = PreferenceManager.getDefaultSharedPreferences(view.getContext());
         String tp=sp.getString("tp", "");
         String s1="",s2="",s3="",s4="";
+        ArrayList<String> arStr = new ArrayList<>();
+        int nach,kon;
         if (act==1)
         {
+            //Загрузка товаров
             Snackbar.make(view, "Загрузка начата!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             msg = MainActivity.h.obtainMessage(10, 1,0);
             MainActivity.h.sendMessage(msg);
-            s1=srv1.getTovary(tp);
             ParserJson p1= new ParserJson();
-            p1.parsTovary(s1, view);
+            int pakKolvo=5000;
+            //String dd=srv1.testObmen(tp);
+            String pakS=String.valueOf(pakKolvo);
+            String paketovS=srv1.getTovaryK(tp,pakS);
+            String [] stM =paketovS.split("_");
+            int paketov=Integer.parseInt(stM[0]);
+            //int paketov=5;
+            int okon=Integer.parseInt(stM[1]);
+            for(int r=0;r<paketov;r++){
+                nach=r*pakKolvo;
+                kon=(r+1)*pakKolvo-1;
+                int zakach=r*pakKolvo;
+                msg = MainActivity.h.obtainMessage(5, zakach,okon);
+                MainActivity.h.sendMessage(msg);
+                arStr.add(srv1.getTovary(tp,nach,kon));
+            }
+            p1.clearTovary();
+            int sm=0;
+            for(String st1:arStr) {
+                p1.parsTovary(st1, view,sm,stM[1]);
+                sm+=pakKolvo;
+            }
             s1=null;
+            arStr.clear();
+            //arStr=null;
+            p1.sortTovary();
+
+            //Загрузка клиентов
             msg = MainActivity.h.obtainMessage(10, 2,0);
             MainActivity.h.sendMessage(msg);
-            s2=srv1.getClienty(tp);
-            p1.parsClienty(s2,view);
+            paketovS=srv1.getClientyK(tp,pakS);
+            stM=null;
+            stM =paketovS.split("_");
+            paketov=Integer.parseInt(stM[0]);
+            okon=Integer.parseInt(stM[1]);
+            for(int r=0;r<paketov;r++){
+                nach=r*pakKolvo;
+                kon=(r+1)*pakKolvo-1;
+                int zakach=r*pakKolvo;
+                msg = MainActivity.h.obtainMessage(6, zakach,okon);
+                MainActivity.h.sendMessage(msg);
+                arStr.add(srv1.getClienty(tp,nach,kon));
+            }
+            p1.clearClienty();
+            sm=0;
+            for(String st1:arStr) {
+                p1.parsClienty(st1, view,sm,stM[1]);
+                sm+=pakKolvo;
+            }
+            s1=null;
+            arStr.clear();
+            //arStr=null;
+            p1.sortClienty(view);
+
+
+            //s2=srv1.getClienty(tp);
+            //p1.parsClienty(s2,view);
             s2=null;
             msg = MainActivity.h.obtainMessage(10, 3,0);
             MainActivity.h.sendMessage(msg);

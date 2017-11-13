@@ -88,16 +88,22 @@ public class MainActivity extends AppCompatActivity {
                 // обновляем TextView
                 switch (msg.what){
                     case 1:
-                        tablo1.setText("Закачано товаров: " + (msg.arg1+1)+" из "+msg.arg2);
+                        tablo1.setText("Обработано товаров: " + (msg.arg1+1)+" из "+msg.arg2);
                         break;
                     case 2:
-                        tablo2.setText("Закачано клиентов: " + (msg.arg1+1)+" из "+msg.arg2);
+                        tablo2.setText("Обработано клиентов: " + (msg.arg1+1)+" из "+msg.arg2);
                         break;
                     case 3:
-                        tablo3.setText("Закачано цен: " + (msg.arg1+1)+" из "+msg.arg2);
+                        tablo3.setText("Обработано цен: " + (msg.arg1+1)+" из "+msg.arg2);
                         break;
                     case 4:
-                        tablo4.setText("Закачано остатков: " + (msg.arg1+1)+" из "+msg.arg2);
+                        tablo4.setText("Обработано остатков: " + (msg.arg1+1)+" из "+msg.arg2);
+                        break;
+                    case 5:
+                        tablo1.setText("Закачано " + (msg.arg1)+" товаров из "+msg.arg2);
+                        break;
+                    case 6:
+                        tablo2.setText("Закачано " + (msg.arg1)+" товаров из "+msg.arg2);
                         break;
                     case 10:
                         switch (msg.arg1) {
