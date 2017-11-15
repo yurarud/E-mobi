@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ public class Pro_fold_fr extends ListFragment {
     static String KOD_TOV="";
     static int Folder=0;
     static Map<String,String[]> Uroven = new HashMap<String,String[]>();
+    EditText strFind;
 
 
     @Override
@@ -58,7 +61,9 @@ public class Pro_fold_fr extends ListFragment {
         RealmQuery<GroupProducs> gr0;// = mRealm.where(GroupProducs.class).equalTo("kod", Cli_fold_fr.KOD_TOV);
         if(Pro_fold_fr.KOD_TOV==""){
             gr0 = mRealm.where(GroupProducs.class).equalTo("level", 0);
-            RealmResults<GroupProducs> nab0 = gr0.findAll();
+
+            RealmResults<GroupProducs> nab0 = gr0.findAllSorted("name");
+
             cli_Folders = new ArrayList<String>();
             kod_Cli_Folders = new ArrayList<String>();
 
@@ -74,14 +79,14 @@ public class Pro_fold_fr extends ListFragment {
         else {
             //kod_Cli_Folders
             gr0 = mRealm.where(GroupProducs.class).equalTo("kod", Pro_fold_fr.KOD_TOV);
-            RealmResults<GroupProducs> nab0 = gr0.findAll();
+            RealmResults<GroupProducs> nab0 = gr0.findAllSorted("name");
             cli_Folders = new ArrayList<String>();
             kod_Cli_Folders = new ArrayList<String>();
 
             for (GroupProducs gp0 : nab0) {
                 if (gp0.groupProducy.size() > 0) {
                     Folder=0;
-                    RealmResults<GroupProducs> podgruppa = gp0.groupProducy.where().findAll();
+                    RealmResults<GroupProducs> podgruppa = gp0.groupProducy.where().findAllSorted("name");
                     for (GroupProducs gp1 : podgruppa) {
                         if (gp1.producty.size() > 0) {
                             cli_Folders.add(gp1.getName());
@@ -93,7 +98,7 @@ public class Pro_fold_fr extends ListFragment {
                     if(gp0.producty.size()>0){
                         Folder=1;
                         productes = new ArrayList<Products>();
-                        RealmResults<Products> podgruppa = gp0.producty.where().findAll();
+                        RealmResults<Products> podgruppa = gp0.producty.where().findAllSorted("name");
                         for (Products gp1 : podgruppa) {
                             cli_Folders.add(gp1.getName());
                             kod_Cli_Folders.add(gp1.getKod());
@@ -141,10 +146,125 @@ public class Pro_fold_fr extends ListFragment {
                     //transaction.addToBackStack(kod_tov);
                     transaction.commit();
                 }
+                else {
+                    getActivity().finish();
+                }
 
             }
         });
 
+        strFind = (EditText) getActivity().findViewById(R.id.etFind);
+
+        Button btnClear = (Button) getActivity().findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+
+            int level;
+            @Override
+            public void onClick(View view) {
+                strFind.setText("");
+
+                if(Uroven.size()==0){
+                    KOD_TOV="";
+                }
+
+
+                // RealmQuery<GroupProducs> gr0 = mRealm.where(GroupProducs.class).equalTo("level", 0);
+                RealmQuery<GroupProducs> gr0;// = mRealm.where(GroupProducs.class).equalTo("kod", Cli_fold_fr.KOD_TOV);
+                if(Pro_fold_fr.KOD_TOV==""){
+                    gr0 = mRealm.where(GroupProducs.class).equalTo("level", 0);
+
+                    RealmResults<GroupProducs> nab0 = gr0.findAllSorted("name");
+
+                    cli_Folders = new ArrayList<String>();
+                    kod_Cli_Folders = new ArrayList<String>();
+
+                    for (GroupProducs gp0 : nab0) {
+                        if (gp0.groupProducy.size() > 0) {
+                            Folder=0;
+                            cli_Folders.add(gp0.getName());
+                            kod_Cli_Folders.add(gp0.getKod());
+                        }
+                    }
+
+                }
+                else {
+                    //kod_Cli_Folders
+                    gr0 = mRealm.where(GroupProducs.class).equalTo("kod", Pro_fold_fr.KOD_TOV);
+                    RealmResults<GroupProducs> nab0 = gr0.findAllSorted("name");
+                    cli_Folders = new ArrayList<String>();
+                    kod_Cli_Folders = new ArrayList<String>();
+
+                    for (GroupProducs gp0 : nab0) {
+                        if (gp0.groupProducy.size() > 0) {
+                            Folder=0;
+                            RealmResults<GroupProducs> podgruppa = gp0.groupProducy.where().findAllSorted("name");
+                            for (GroupProducs gp1 : podgruppa) {
+                                if (gp1.producty.size() > 0) {
+                                    cli_Folders.add(gp1.getName());
+                                    kod_Cli_Folders.add(gp1.getKod());
+                                }
+                            }
+                        }
+                        else{
+                            if(gp0.producty.size()>0){
+                                Folder=1;
+                                productes = new ArrayList<Products>();
+                                RealmResults<Products> podgruppa = gp0.producty.where().findAllSorted("name");
+                                for (Products gp1 : podgruppa) {
+                                    cli_Folders.add(gp1.getName());
+                                    kod_Cli_Folders.add(gp1.getKod());
+                                    productes.add(gp1);
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                if(Folder==0) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                            android.R.layout.simple_list_item_1, cli_Folders);
+                    setListAdapter(adapter);
+                }
+                else
+                {
+                    ProductAdapter<Products> b1 = new ProductAdapter<Products>(getActivity(), R.layout.item_clients, productes,ZakazActivity.tipCeny);
+                    setListAdapter(b1);
+                }
+
+
+            }
+        });
+
+        Button btnFind = (Button) getActivity().findViewById(R.id.btnFind);
+        btnFind.setOnClickListener(new View.OnClickListener() {
+
+            int level;
+            @Override
+            public void onClick(View view) {
+
+                String stF = String.valueOf(strFind.getText());
+                RealmQuery<Products> gr0;
+                gr0 = mRealm.where(Products.class).contains("name", stF);
+                        //.beginsWith("name", stF);
+                RealmResults<Products> nab0 = gr0.findAllSorted("name");
+                cli_Folders = new ArrayList<String>();
+                kod_Cli_Folders = new ArrayList<String>();
+                Folder=1;
+                productes = new ArrayList<Products>();
+                for (Products gp1 : nab0) {
+                    cli_Folders.add(gp1.getName());
+                    kod_Cli_Folders.add(gp1.getKod());
+                    productes.add(gp1);
+                }
+
+
+
+                    ProductAdapter<Products> b1 = new ProductAdapter<Products>(getActivity(), R.layout.item_clients, productes,ZakazActivity.tipCeny);
+                setListAdapter(b1);
+
+            }
+        });
 
     }
 

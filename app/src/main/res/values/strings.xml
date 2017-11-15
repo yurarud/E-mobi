@@ -32,4 +32,6 @@
     <string name="open">Открыть</string>
     <string name="komment">Комментарий</string>
     <string name="VybKlienta">Выбор клиента</string>
+    <string name="find">Поиск</string>
+    <string name="Clear">X</string>
 </resources>

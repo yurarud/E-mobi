@@ -175,6 +175,7 @@ public class ParserJson {
                 }
             }
         }
+
         mRealm.commitTransaction();
 
         /*Snackbar.make(view, "Загрузка товаров завершена!", Snackbar.LENGTH_LONG)

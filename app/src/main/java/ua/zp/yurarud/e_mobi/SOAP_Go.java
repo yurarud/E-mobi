@@ -68,7 +68,11 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
             //String dd=srv1.testObmen(tp);
             String pakS=String.valueOf(pakKolvo);
             String paketovS=srv1.getTovaryK(tp,pakS);
-            String [] stM =paketovS.split("_");
+            String [] stM;
+            if(paketovS==""){
+                paketovS="0_0";
+            }
+            stM=paketovS.split("_");
             int paketov=Integer.parseInt(stM[0]);
             //int paketov=5;
             int okon=Integer.parseInt(stM[1]);
@@ -96,6 +100,9 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
             MainActivity.h.sendMessage(msg);
             paketovS=srv1.getClientyK(tp,pakS);
             stM=null;
+            if(paketovS==""){
+                paketovS="0_0";
+            }
             stM =paketovS.split("_");
             paketov=Integer.parseInt(stM[0]);
             okon=Integer.parseInt(stM[1]);

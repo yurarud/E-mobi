@@ -65,7 +65,6 @@ public class Spisok_zakaz extends ListFragment {
         Zakaz z1= ZTable.get(position);
         intent.putExtra("nomer",z1.getNomer());
         startActivity(intent);
-
     }
 
 }
