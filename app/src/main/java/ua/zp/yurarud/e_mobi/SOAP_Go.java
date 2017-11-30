@@ -49,7 +49,8 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
         WebService1 srv1 = new WebService1();
         //srv1.setUrl("http://192.168.1.140/UTP/ws/WebService1/WebService1SoapBinding/");
         //srv1.setUrl("http://91.237.7.170/UTP/ws/WebService1/WebService1SoapBinding/");
-        srv1.setUrl("http://192.168.1.101/UTP/ws/WebService1/WebService1SoapBinding/");
+        //srv1.setUrl("http://192.168.1.101/UTP/ws/WebService1/WebService1SoapBinding/");
+        srv1.setUrl("http://1c.tm-etalon.com.ua/UTP/ws/WebService1/WebService1SoapBinding/");
         srv1.setTimeOut(1500);
         sp = PreferenceManager.getDefaultSharedPreferences(view.getContext());
         String tp=sp.getString("tp", "");
@@ -120,31 +121,122 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
                 p1.parsClienty(st1, view,sm,stM[1]);
                 sm+=pakKolvo;
             }
-            s1=null;
             arStr.clear();
             //arStr=null;
             p1.sortClienty(view);
 
-
-            //s2=srv1.getClienty(tp);
-            //p1.parsClienty(s2,view);
-            s2=null;
+            //Загрузка цен
             msg = MainActivity.h.obtainMessage(10, 3,0);
             MainActivity.h.sendMessage(msg);
-            s3=srv1.getCeny(tp);
-            p1.parsCeny(s3,view);
-            s3=null;
+            paketovS=srv1.getCenyK(tp,pakS);
+            stM=null;
+            if(paketovS==""){
+                paketovS="0_0";
+            }
+            stM =paketovS.split("_");
+            paketov=Integer.parseInt(stM[0]);
+            okon=Integer.parseInt(stM[1]);
+            for(int r=0;r<paketov;r++){
+                nach=r*pakKolvo;
+                kon=(r+1)*pakKolvo-1;
+                int zakach=r*pakKolvo;
+                msg = MainActivity.h.obtainMessage(7, zakach,okon);
+                MainActivity.h.sendMessage(msg);
+                arStr.add(srv1.getCeny(tp,nach,kon));
+            }
+            sm=0;
+            for(String st1:arStr) {
+                p1.parsCeny(st1, view,sm,stM[1]);
+                sm+=pakKolvo;
+            }
+            arStr.clear();
+
+            //Загрузка остатков
             msg = MainActivity.h.obtainMessage(10, 4,0);
             MainActivity.h.sendMessage(msg);
-            s4= srv1.getOstatki(tp);
-            p1.parsOstatki(s4,view);
+            paketovS=srv1.getOstatkiK(tp,pakS);
+            stM=null;
+            if(paketovS==""){
+                paketovS="0_0";
+            }
+            stM =paketovS.split("_");
+            paketov=Integer.parseInt(stM[0]);
+            okon=Integer.parseInt(stM[1]);
+            for(int r=0;r<paketov;r++){
+                nach=r*pakKolvo;
+                kon=(r+1)*pakKolvo-1;
+                int zakach=r*pakKolvo;
+                msg = MainActivity.h.obtainMessage(8, zakach,okon);
+                MainActivity.h.sendMessage(msg);
+                arStr.add(srv1.getOstatki(tp,nach,kon));
+            }
+            sm=0;
+            for(String st1:arStr) {
+                p1.parsOstatki(st1, view,sm,stM[1]);
+                sm+=pakKolvo;
+            }
+            arStr.clear();
+            msg = MainActivity.h.obtainMessage(20, 1,0, view);
+            MainActivity.h.sendMessage(msg);
+
         }
         if(act==2){
+            //Загрузка остатков
             msg = MainActivity.h.obtainMessage(10, 4,0);
             MainActivity.h.sendMessage(msg);
-            s4= srv1.getOstatki(tp);
             ParserJson p1= new ParserJson();
-            p1.parsOstatki(s4,view);
+            int pakKolvo=5000;
+            String pakS=String.valueOf(pakKolvo);
+            String paketovS = srv1.getOstatkiK(tp, pakS);
+            if(paketovS==""){
+                paketovS="0_0";
+            }
+            String [] stM =paketovS.split("_");
+            int paketov=Integer.parseInt(stM[0]);
+            int okon=Integer.parseInt(stM[1]);
+            for(int r=0;r<paketov;r++){
+                nach=r*pakKolvo;
+                kon=(r+1)*pakKolvo-1;
+                int zakach=r*pakKolvo;
+                msg = MainActivity.h.obtainMessage(8, zakach,okon);
+                MainActivity.h.sendMessage(msg);
+                arStr.add(srv1.getOstatki(tp,nach,kon));
+            }
+            int sm=0;
+            for(String st1:arStr) {
+                p1.parsOstatki(st1, view,sm,stM[1]);
+                sm+=pakKolvo;
+            }
+            arStr.clear();
+
+            //Загрузка цен
+            msg = MainActivity.h.obtainMessage(10, 3,0);
+            MainActivity.h.sendMessage(msg);
+            paketovS=srv1.getCenyK(tp,pakS);
+            stM=null;
+            if(paketovS==""){
+                paketovS="0_0";
+            }
+            stM =paketovS.split("_");
+            paketov=Integer.parseInt(stM[0]);
+            okon=Integer.parseInt(stM[1]);
+            for(int r=0;r<paketov;r++){
+                nach=r*pakKolvo;
+                kon=(r+1)*pakKolvo-1;
+                int zakach=r*pakKolvo;
+                msg = MainActivity.h.obtainMessage(7, zakach,okon);
+                MainActivity.h.sendMessage(msg);
+                arStr.add(srv1.getCeny(tp,nach,kon));
+            }
+            sm=0;
+            for(String st1:arStr) {
+                p1.parsCeny(st1, view,sm,stM[1]);
+                sm+=pakKolvo;
+            }
+            arStr.clear();
+
+            msg = MainActivity.h.obtainMessage(20, 1,0, view);
+            MainActivity.h.sendMessage(msg);
         }
         if(act==4){
             ParserJson p1= new ParserJson();
@@ -157,6 +249,7 @@ public class SOAP_Go extends Thread  implements IWsdl2CodeEvents {
             ZakazSpisokActivity.otpravlen=srv1.setTovary(json);
         }
         //tv1=s1;
+
 
     }
 

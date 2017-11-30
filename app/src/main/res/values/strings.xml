@@ -6,7 +6,7 @@
     <string name="Order">Новый заказ</string>
     <string name="UploadData">Выгрузить заказы</string>
     <string name="DownloadTovary">Полная загрузка</string>
-    <string name="DownloadKlienty">Загрузка остатков</string>
+    <string name="DownloadKlienty">Обновление данных</string>
     <string name="Client">Клиент</string>
     <string name="TypCeny">Тип оплаты:</string>
     <string name="Podbor">Подбор товаров</string>
@@ -34,4 +34,7 @@
     <string name="VybKlienta">Выбор клиента</string>
     <string name="find">Поиск</string>
     <string name="Clear">X</string>
+    <string name="tovary">Каталог товаров</string>
+    <string name="back">Назад</string>
+    <string name="alert1">Заказ не записан. Сохранить?</string>
 </resources>

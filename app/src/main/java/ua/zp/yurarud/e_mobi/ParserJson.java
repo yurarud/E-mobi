@@ -306,15 +306,16 @@ public class ParserJson {
 
         mRealm.close();
 
-        Snackbar.make(view, "Загрузка клиентов завершена!", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        /*Snackbar.make(view, "Загрузка клиентов завершена!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();*/
 
     }
 
-    protected void parsCeny(String strJson, View view)  {
+    protected void parsCeny(String strJson, View view, int smesh, String kon)  {
         StringBuilder sb1=new StringBuilder();
 
         Realm mRealm = Realm.getDefaultInstance();
+        int okon=Integer.parseInt(kon);
 
         try {
             JSONObject dataJsonObj = null;
@@ -324,7 +325,7 @@ public class ParserJson {
             for(int i=0;i<tovary.length();i++)
             {
 
-                msg = MainActivity.h.obtainMessage(3, i, tovary.length());
+                msg = MainActivity.h.obtainMessage(3, i+smesh, okon);
                 MainActivity.h.sendMessage(msg);
 
                 mRealm.beginTransaction();
@@ -353,8 +354,8 @@ public class ParserJson {
 
             mRealm.close();
 
-            Snackbar.make(view, "Загрузка цен завершена!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            /*Snackbar.make(view, "Загрузка цен завершена!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();*/
 
 /*
             TextView tvInfo = (TextView) view.findViewById(R.id.textView);
@@ -367,10 +368,11 @@ public class ParserJson {
         }
     }
 
-    protected void parsOstatki(String strJson, View view)  {
+    protected void parsOstatki(String strJson, View view, int smesh, String kon)  {
         StringBuilder sb1=new StringBuilder();
 
         Realm mRealm = Realm.getDefaultInstance();
+        int okon=Integer.parseInt(kon);
 
         try {
             JSONObject dataJsonObj = null;
@@ -381,7 +383,7 @@ public class ParserJson {
             for(int i=0;i<tovary.length();i++)
             {
 
-                msg = MainActivity.h.obtainMessage(4, i, tovary.length());
+                msg = MainActivity.h.obtainMessage(4, i+smesh, okon);
                 MainActivity.h.sendMessage(msg);
 
                 JSONObject tovar=tovary.getJSONObject(i);
@@ -401,8 +403,8 @@ public class ParserJson {
 
             mRealm.close();
 
-            Snackbar.make(view, "Загрузка остатков завершена!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            /*Snackbar.make(view, "Загрузка остатков завершена!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();*/
 
 /*
             TextView tvInfo = (TextView) view.findViewById(R.id.textView);

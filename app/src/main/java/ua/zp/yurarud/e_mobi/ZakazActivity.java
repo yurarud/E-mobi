@@ -54,11 +54,60 @@ public class ZakazActivity extends FragmentActivity {
 
 
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        int otvet=data.getIntExtra("otvet",0);
+
+        if(otvet==2){
+            naim_kli = null;
+            kod_kli = null;
+            otpravlen = false;
+            if (!mRealm.isInTransaction()) {
+                mRealm.beginTransaction();
+            }
+            RealmQuery<Zakaz> zak0 = mRealm.where(Zakaz.class).equalTo("nomer", nomer);
+            RealmResults<Zakaz> zak1 = zak0.findAll();
+            if (zak1.size() > 0) {
+                for (Zakaz zak : zak1) {
+                    ArrayList<ZakazTable> lzt=new ArrayList<>();
+                    for(ZakazTable zt2:zak.producty){
+                        lzt.add(zt2);
+                        //zt2.deleteFromRealm();
+                    }
+                    for(int i=0;i<lzt.size();i++){
+                        lzt.get(i).deleteFromRealm();
+                    }
+                    zak.deleteFromRealm();
+                }
+            }
+            finish();
+        }
+
+        if(otvet==1){
+            Save();
+            finish();
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
 
         if(nomer == -1){
+            Intent intent = new Intent(getApplicationContext(), AlertActivity.class);
+            startActivityForResult(intent,1);
+        }
+        else{
+            super.onBackPressed();
+        }
+        //
+
+
+
+
+        /*if(nomer == -1){
             naim_kli = null;
             kod_kli = null;
             otpravlen = false;
@@ -81,7 +130,7 @@ public class ZakazActivity extends FragmentActivity {
                 }
             }
 
-        }
+        }*/
 
 
 
@@ -232,57 +281,16 @@ public class ZakazActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                 //if (nomer < 1) {
-                if (!otpravlen) {
-                    Ceny cen1;
-                    RealmQuery<Ceny> cen0 = mRealm.where(Ceny.class).equalTo("id", 0);
-                    cen1 = cen0.findFirst();
-                    if (cen1 == null) {
-
-                        //nomer = 1;
-                        if (!mRealm.isInTransaction()) {
-                            mRealm.beginTransaction();
-                        }
-                        cen1 = mRealm.createObject(Ceny.class);
-                        cen1.setId(0);
-                        cen1.setLastNomer(0);
-                        mRealm.commitTransaction();
-
-                    }
-                        if (nomer == -1) {
-
-                        nomer = cen1.getLastNomer() + 1;
-                        if (!mRealm.isInTransaction()) {
-                            mRealm.beginTransaction();
-                        }
-                        cen1.setLastNomer(nomer);
-                        RealmQuery<Zakaz> zak2 = mRealm.where(Zakaz.class).equalTo("nomer", -1);
-                        Zakaz zak3 = zak2.findFirst();
-                        zak3.setNomer(nomer);
-                        komm = (TextView) findViewById(R.id.ed_komm);
-                        zak3.setKomment(String.valueOf(komm.getText()));
-                        mRealm.commitTransaction();
-                            Snackbar.make(view, "Документ сохранен!", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                            shapka = (TextView) findViewById(R.id.tv_zakaz_shapka);
-                            shapka.setText("Заказ № "+String.valueOf(nomer));
-                        }
-                        else{
-
-                            if (!mRealm.isInTransaction()) {
-                                mRealm.beginTransaction();
-                            }
-                            RealmQuery<Zakaz> zak2 = mRealm.where(Zakaz.class).equalTo("nomer", nomer);
-                            Zakaz zak3 = zak2.findFirst();
-                            zak3.setTipCeny(tipCeny);
-                            komm = (TextView) findViewById(R.id.ed_komm);
-                            zak3.setKomment(String.valueOf(komm.getText()));
-                            mRealm.commitTransaction();
-                            Snackbar.make(view, "Документ сохранен!", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                        }
-
+                int res=Save();
+                if(res==0){
+                    Snackbar.make(view, "Документ сохранен!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
-                else{
+                if(res==1){
+                    Snackbar.make(view, "Документ сохранен!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                if(res==2){
                     Snackbar.make(view, "Доступен только для чтения!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
@@ -390,4 +398,64 @@ public class ZakazActivity extends FragmentActivity {
         }
 
     }
+
+    public int Save(){
+        int res = 0;
+        if (!otpravlen) {
+
+            Ceny cen1;
+            RealmQuery<Ceny> cen0 = mRealm.where(Ceny.class).equalTo("id", 0);
+            cen1 = cen0.findFirst();
+            if (cen1 == null) {
+
+                //nomer = 1;
+                if (!mRealm.isInTransaction()) {
+                    mRealm.beginTransaction();
+                }
+                cen1 = mRealm.createObject(Ceny.class);
+                cen1.setId(0);
+                cen1.setLastNomer(0);
+                mRealm.commitTransaction();
+
+            }
+            if (nomer == -1) {
+
+                nomer = cen1.getLastNomer() + 1;
+                if (!mRealm.isInTransaction()) {
+                    mRealm.beginTransaction();
+                }
+                cen1.setLastNomer(nomer);
+                RealmQuery<Zakaz> zak2 = mRealm.where(Zakaz.class).equalTo("nomer", -1);
+                Zakaz zak3 = zak2.findFirst();
+                zak3.setNomer(nomer);
+                komm = (TextView) findViewById(R.id.ed_komm);
+                zak3.setKomment(String.valueOf(komm.getText()));
+                mRealm.commitTransaction();
+
+                shapka = (TextView) findViewById(R.id.tv_zakaz_shapka);
+                shapka.setText("Заказ № "+String.valueOf(nomer));
+                res=0;
+            }
+            else{
+
+                if (!mRealm.isInTransaction()) {
+                    mRealm.beginTransaction();
+                }
+                RealmQuery<Zakaz> zak2 = mRealm.where(Zakaz.class).equalTo("nomer", nomer);
+                Zakaz zak3 = zak2.findFirst();
+                zak3.setTipCeny(tipCeny);
+                komm = (TextView) findViewById(R.id.ed_komm);
+                zak3.setKomment(String.valueOf(komm.getText()));
+                mRealm.commitTransaction();
+                res= 1;
+
+            }
+
+        }
+        else{
+            res= 2;
+        }
+        return res;
+    }
+
 }

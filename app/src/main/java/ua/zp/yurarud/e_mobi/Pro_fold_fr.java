@@ -123,7 +123,7 @@ public class Pro_fold_fr extends ListFragment {
 
 
 
-        ImageButton btnBack = (ImageButton) getActivity().findViewById(R.id.btnBack);
+        Button btnBack = (Button) getActivity().findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
 
             int level;

@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tablo3;
     TextView tablo4;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ClientActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnTovary = (ImageButton) findViewById(R.id.tovaryButton);
+        btnTovary.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
                 startActivity(intent);
             }
         });
@@ -87,43 +99,51 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(android.os.Message msg) {
                 // обновляем TextView
                 switch (msg.what){
+                    case 20: {
+                        showDialog((View) msg.obj);
+                        break;
+                    }
                     case 1:
                         tablo1.setText("Обработано товаров: " + (msg.arg1+1)+" из "+msg.arg2);
                         break;
-                    case 2:
+                    case 2:{
                         tablo2.setText("Обработано клиентов: " + (msg.arg1+1)+" из "+msg.arg2);
-                        break;
-                    case 3:
+                        break;}
+                    case 3:{
                         tablo3.setText("Обработано цен: " + (msg.arg1+1)+" из "+msg.arg2);
-                        break;
-                    case 4:
+                        break;}
+                    case 4:{
                         tablo4.setText("Обработано остатков: " + (msg.arg1+1)+" из "+msg.arg2);
-                        break;
-                    case 5:
+                        break;}
+                    case 5:{
                         tablo1.setText("Закачано " + (msg.arg1)+" товаров из "+msg.arg2);
-                        break;
-                    case 6:
-                        tablo2.setText("Закачано " + (msg.arg1)+" товаров из "+msg.arg2);
-                        break;
+                        break;}
+                    case 6:{
+                        tablo2.setText("Закачано " + (msg.arg1)+" клиентов из "+msg.arg2);
+                        break;}
+                    case 7:{
+                        tablo3.setText("Закачано " + (msg.arg1)+" цен из "+msg.arg2);
+                        break;}
+                    case 8:{
+                        tablo4.setText("Закачано " + (msg.arg1)+" остатков из "+msg.arg2);
+                        break;}
                     case 10:
                         switch (msg.arg1) {
-                            case 1:
+                            case 1:{
                                 tablo1.setText("Запрос данных с сервера...");
-                                break;
-                            case 2:
+                                break;}
+                            case 2:{
                                 tablo2.setText("Запрос данных с сервера...");
-                                break;
-                            case 3:
+                                break;}
+                            case 3:{
                                 tablo3.setText("Запрос данных с сервера...");
-                                break;
-                            case 4:
+                                break;}
+                            case 4:{
                                 tablo4.setText("Запрос данных с сервера...");
-                                break;
+                                break;}
                         }
+
                 }
-
-
-
 
             };
         };
@@ -145,6 +165,13 @@ public class MainActivity extends AppCompatActivity {
 
                 SOAP_Go sg =new SOAP_Go(1,view);
                 sg.start();
+               /* try {
+                    sg.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
+                //showDialog(view);
 
             }
         });
@@ -158,6 +185,13 @@ public class MainActivity extends AppCompatActivity {
 
                 SOAP_Go sg =new SOAP_Go(2,view);
                 sg.start();
+                /*try {
+                    sg.join();
+                    showDialog(view);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
 
             }
         });
@@ -191,4 +225,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void showDialog(View v) {
+
+        CustomDialogFragment dialog = new CustomDialogFragment();
+        dialog.show(getSupportFragmentManager(), "custom");
+    }
 }

@@ -125,7 +125,7 @@ public class Cli_fold_fr extends ListFragment {
             setListAdapter(adapter);
 
 
-        ImageButton btnBack = (ImageButton) getActivity().findViewById(R.id.btnBack);
+        Button btnBack = (Button) getActivity().findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
 
             int level;
@@ -252,7 +252,7 @@ public class Cli_fold_fr extends ListFragment {
             public void onClick(View view) {
                 String stF = String.valueOf(strFind.getText());
                 RealmQuery<Clients> gr0;
-                gr0 = mRealm.where(Clients.class).beginsWith("name", stF);
+                gr0 = mRealm.where(Clients.class).contains("name", stF);
                         //.equalTo("name", stF);
                 RealmResults<Clients> nab0 = gr0.findAllSorted("name");
                 cli_Folders = new ArrayList<>();

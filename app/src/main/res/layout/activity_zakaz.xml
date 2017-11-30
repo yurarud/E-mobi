@@ -41,8 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.22"
-            android:text="@string/VybKlienta"
-            app:srcCompat="@drawable/up" />
+            android:text="@string/VybKlienta" />
     </LinearLayout>
 
     <LinearLayout

@@ -123,13 +123,13 @@ public class WebService1 {
         return "";
     }
 
-    public void getOstatkiAsync(String idUzla) throws Exception{
+    public void getOstatkiAsync(String idUzla,int nach,int kon) throws Exception{
         if (this.eventHandler == null)
             throw new Exception("Async Methods Requires IWsdl2CodeEvents");
-        getOstatkiAsync(idUzla, null);
+        getOstatkiAsync(idUzla, nach, kon, null);
     }
 
-    public void getOstatkiAsync(final String idUzla,final List<HeaderProperty> headers) throws Exception{
+    public void getOstatkiAsync(final String idUzla,final int nach,final int kon,final List<HeaderProperty> headers) throws Exception{
 
         new AsyncTask<Void, Void, String>(){
             @Override
@@ -138,7 +138,7 @@ public class WebService1 {
             };
             @Override
             protected String doInBackground(Void... params) {
-                return getOstatki(idUzla, headers);
+                return getOstatki(idUzla, nach, kon, headers);
             }
             @Override
             protected void onPostExecute(String result)
@@ -151,23 +151,25 @@ public class WebService1 {
         }.execute();
     }
 
-    public String getOstatki(String idUzla){
-        return getOstatki(idUzla, null);
+    public String getOstatki(String idUzla,int nach,int kon){
+        return getOstatki(idUzla, nach, kon, null);
     }
 
-    public String getOstatki(String idUzla,List<HeaderProperty> headers){
+    public String getOstatki(String idUzla,int nach,int kon,List<HeaderProperty> headers){
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://"+adress+"/WebService1","getOstatki");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getOstatki");
         soapReq.addProperty("idUzla",idUzla);
+        soapReq.addProperty("nach",nach);
+        soapReq.addProperty("kon",kon);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://"+adress+"/WebService1/getOstatki", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/getOstatki", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://"+adress+"/WebService1/getOstatki", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/getOstatki", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){
@@ -349,13 +351,13 @@ public class WebService1 {
         return "";
     }
 
-    public void getCenyAsync(String idUzla) throws Exception{
+    public void getCenyAsync(String idUzla,int nach,int kon) throws Exception{
         if (this.eventHandler == null)
             throw new Exception("Async Methods Requires IWsdl2CodeEvents");
-        getCenyAsync(idUzla, null);
+        getCenyAsync(idUzla, nach, kon, null);
     }
 
-    public void getCenyAsync(final String idUzla,final List<HeaderProperty> headers) throws Exception{
+    public void getCenyAsync(final String idUzla,final int nach,final int kon,final List<HeaderProperty> headers) throws Exception{
 
         new AsyncTask<Void, Void, String>(){
             @Override
@@ -364,7 +366,7 @@ public class WebService1 {
             };
             @Override
             protected String doInBackground(Void... params) {
-                return getCeny(idUzla, headers);
+                return getCeny(idUzla, nach, kon, headers);
             }
             @Override
             protected void onPostExecute(String result)
@@ -377,23 +379,25 @@ public class WebService1 {
         }.execute();
     }
 
-    public String getCeny(String idUzla){
-        return getCeny(idUzla, null);
+    public String getCeny(String idUzla,int nach,int kon){
+        return getCeny(idUzla, nach, kon, null);
     }
 
-    public String getCeny(String idUzla,List<HeaderProperty> headers){
+    public String getCeny(String idUzla,int nach,int kon,List<HeaderProperty> headers){
         SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         soapEnvelope.implicitTypes = true;
         soapEnvelope.dotNet = true;
-        SoapObject soapReq = new SoapObject("http://"+adress+"/WebService1","getCeny");
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getCeny");
         soapReq.addProperty("idUzla",idUzla);
+        soapReq.addProperty("nach",nach);
+        soapReq.addProperty("kon",kon);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
         try{
             if (headers!=null){
-                httpTransport.call("http://"+adress+"/WebService1/getCeny", soapEnvelope,headers);
+                httpTransport.call("http://localhost/WebService1/getCeny", soapEnvelope,headers);
             }else{
-                httpTransport.call("http://"+adress+"/WebService1/getCeny", soapEnvelope);
+                httpTransport.call("http://localhost/WebService1/getCeny", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){
@@ -692,6 +696,156 @@ public class WebService1 {
                 httpTransport.call("http://"+adress+"/WebService1/getClientyK", soapEnvelope,headers);
             }else{
                 httpTransport.call("http://"+adress+"/WebService1/getClientyK", soapEnvelope);
+            }
+            Object retObj = soapEnvelope.bodyIn;
+            if (retObj instanceof SoapFault){
+                SoapFault fault = (SoapFault)retObj;
+                Exception ex = new Exception(fault.faultstring);
+                if (eventHandler != null)
+                    eventHandler.Wsdl2CodeFinishedWithException(ex);
+            }else{
+                SoapObject result=(SoapObject)retObj;
+                if (result.getPropertyCount() > 0){
+                    Object obj = result.getProperty(0);
+                    if (obj != null && obj.getClass().equals(SoapPrimitive.class)){
+                        SoapPrimitive j =(SoapPrimitive) obj;
+                        String resultVariable = j.toString();
+                        return resultVariable;
+                    }else if (obj!= null && obj instanceof String){
+                        String resultVariable = (String) obj;
+                        return resultVariable;
+                    }
+                }
+            }
+        }catch (Exception e) {
+            if (eventHandler != null)
+                eventHandler.Wsdl2CodeFinishedWithException(e);
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public void getCenyKAsync(String idUzla,String paket) throws Exception{
+        if (this.eventHandler == null)
+            throw new Exception("Async Methods Requires IWsdl2CodeEvents");
+        getCenyKAsync(idUzla, paket, null);
+    }
+
+    public void getCenyKAsync(final String idUzla,final String paket,final List<HeaderProperty> headers) throws Exception{
+
+        new AsyncTask<Void, Void, String>(){
+            @Override
+            protected void onPreExecute() {
+                eventHandler.Wsdl2CodeStartedRequest();
+            };
+            @Override
+            protected String doInBackground(Void... params) {
+                return getCenyK(idUzla, paket, headers);
+            }
+            @Override
+            protected void onPostExecute(String result)
+            {
+                eventHandler.Wsdl2CodeEndedRequest();
+                if (result != null){
+                    eventHandler.Wsdl2CodeFinished("getCenyK", result);
+                }
+            }
+        }.execute();
+    }
+
+    public String getCenyK(String idUzla,String paket){
+        return getCenyK(idUzla, paket, null);
+    }
+
+    public String getCenyK(String idUzla,String paket,List<HeaderProperty> headers){
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        soapEnvelope.implicitTypes = true;
+        soapEnvelope.dotNet = true;
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getCenyK");
+        soapReq.addProperty("idUzla",idUzla);
+        soapReq.addProperty("paket",paket);
+        soapEnvelope.setOutputSoapObject(soapReq);
+        HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
+        try{
+            if (headers!=null){
+                httpTransport.call("http://localhost/WebService1/getCenyK", soapEnvelope,headers);
+            }else{
+                httpTransport.call("http://localhost/WebService1/getCenyK", soapEnvelope);
+            }
+            Object retObj = soapEnvelope.bodyIn;
+            if (retObj instanceof SoapFault){
+                SoapFault fault = (SoapFault)retObj;
+                Exception ex = new Exception(fault.faultstring);
+                if (eventHandler != null)
+                    eventHandler.Wsdl2CodeFinishedWithException(ex);
+            }else{
+                SoapObject result=(SoapObject)retObj;
+                if (result.getPropertyCount() > 0){
+                    Object obj = result.getProperty(0);
+                    if (obj != null && obj.getClass().equals(SoapPrimitive.class)){
+                        SoapPrimitive j =(SoapPrimitive) obj;
+                        String resultVariable = j.toString();
+                        return resultVariable;
+                    }else if (obj!= null && obj instanceof String){
+                        String resultVariable = (String) obj;
+                        return resultVariable;
+                    }
+                }
+            }
+        }catch (Exception e) {
+            if (eventHandler != null)
+                eventHandler.Wsdl2CodeFinishedWithException(e);
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public void getOstatkiKAsync(String idUzla,String paket) throws Exception{
+        if (this.eventHandler == null)
+            throw new Exception("Async Methods Requires IWsdl2CodeEvents");
+        getOstatkiKAsync(idUzla, paket, null);
+    }
+
+    public void getOstatkiKAsync(final String idUzla,final String paket,final List<HeaderProperty> headers) throws Exception{
+
+        new AsyncTask<Void, Void, String>(){
+            @Override
+            protected void onPreExecute() {
+                eventHandler.Wsdl2CodeStartedRequest();
+            };
+            @Override
+            protected String doInBackground(Void... params) {
+                return getOstatkiK(idUzla, paket, headers);
+            }
+            @Override
+            protected void onPostExecute(String result)
+            {
+                eventHandler.Wsdl2CodeEndedRequest();
+                if (result != null){
+                    eventHandler.Wsdl2CodeFinished("getOstatkiK", result);
+                }
+            }
+        }.execute();
+    }
+
+    public String getOstatkiK(String idUzla,String paket){
+        return getOstatkiK(idUzla, paket, null);
+    }
+
+    public String getOstatkiK(String idUzla,String paket,List<HeaderProperty> headers){
+        SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        soapEnvelope.implicitTypes = true;
+        soapEnvelope.dotNet = true;
+        SoapObject soapReq = new SoapObject("http://localhost/WebService1","getOstatkiK");
+        soapReq.addProperty("idUzla",idUzla);
+        soapReq.addProperty("paket",paket);
+        soapEnvelope.setOutputSoapObject(soapReq);
+        HttpTransportSE httpTransport = new HttpTransportSE(url,timeOut);
+        try{
+            if (headers!=null){
+                httpTransport.call("http://localhost/WebService1/getOstatkiK", soapEnvelope,headers);
+            }else{
+                httpTransport.call("http://localhost/WebService1/getOstatkiK", soapEnvelope);
             }
             Object retObj = soapEnvelope.bodyIn;
             if (retObj instanceof SoapFault){

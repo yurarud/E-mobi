@@ -90,11 +90,11 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/UploadButton"
+                android:id="@+id/tovaryButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/database_upload" />
+                app:srcCompat="@drawable/kniga35" />
 
             <ImageButton
                 android:id="@+id/DownloadTovButton"
@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/UploadData"
+                android:text="@string/tovary"
                 android:textAlignment="center"
                 android:textColor="@android:color/black" />
 

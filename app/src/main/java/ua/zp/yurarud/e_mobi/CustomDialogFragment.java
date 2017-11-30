@@ -11,6 +11,11 @@ public class CustomDialogFragment extends DialogFragment{
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        return builder.setTitle(R.string.exit).setMessage(R.string.save_data).create();
+        return builder
+                .setTitle("Загрузка данных")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage("Загрузка завершена!")
+                .setPositiveButton("OK", null)
+                .create();
     }
 }
